@@ -2,18 +2,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
 
-        neuter: {
-            options: {
-                includeSourceURL: true
-            },
-            'build/application.js': 'src/client/app.js'
-        },
-
         watch: {
-            application_code: {
-                files: ['src/client/**/*.js'],
-                tasks: ['neuter']
-            },
             handlebars_templates: {
                 files: ["src/client/templates/**/*.hbs"],
                 tasks: ['emberTemplates']
@@ -41,12 +30,12 @@ module.exports = function(grunt) {
                     return sourceFile.replace(/src\/client\/templates\//, '');
                 }
             },
-            'build/templates.js': ["src/client/templates/**/*.hbs"]
+            'src/client/templates.js': ["src/client/templates/**/*.hbs"]
         },
 
     bgShell: {
         supervisor: {
-            cmd: 'supervisor src/server/server.js',
+            cmd: 'supervisor server.js',
             stdout: true,
             stderr: true,
             bg: true
@@ -55,10 +44,8 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-neuter');
     grunt.loadNpmTasks('grunt-ember-templates');
     grunt.loadNpmTasks('grunt-bg-shell');
 
-    grunt.registerTask('server', ['bgShell:supervisor', 'watch']);
-    grunt.registerTask('default', ['neuter', 'emberTemplates', 'bgShell:supervisor', 'watch']);
+    grunt.registerTask('server', ['emberTemplates', 'bgShell:supervisor', 'watch']);
 };
