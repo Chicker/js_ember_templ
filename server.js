@@ -15,7 +15,9 @@ srv.use(express.logger());
 srv.get("/", function (req, res) {
     res.render("index.html");
 });
-
-srv.use("/", express.static("build"));
+//  __dirname is .....js_ember_templ/
+srv.use("/", express.static(__dirname));
+srv.use("/", express.static(__dirname + "/build"));
+srv.use("/vendor", express.static("vendor"));
 
 srv.listen(3000);
